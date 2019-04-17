@@ -97,9 +97,7 @@ for test_file in os.listdir(test_dir):
     dtw.update([transalte[sorted_dtw[0][0]]])
     text_to_file.append(row_text + ' - ' + str(transalte[sorted_euclid[0][0]])  + ' - ' + str(transalte[sorted_dtw[0][0]]) + "\n")
 
-with open("output.txt",'w') as f:
-    # for l in text_to_file:
-    f.writelines(text_to_file)
+open("output.txt", 'w').writelines(text_to_file)
 
 
 
