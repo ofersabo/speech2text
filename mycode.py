@@ -98,8 +98,5 @@ for test_file in os.listdir(test_dir):
     text_to_file.append(row_text + ' - ' + str(transalte[sorted_euclid[0][0]])  + ' - ' + str(transalte[sorted_dtw[0][0]]) + "\n")
 
 open("output.txt", 'w').writelines(text_to_file)
-
-
-
-print(euclid)
-print(dtw)
+# print(euclid)
+# print(dtw)
