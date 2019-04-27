@@ -1,6 +1,8 @@
 import librosa
 import os
 import numpy as np
+
+
 train_dir = "data/train_data"
 test_dir = "data/test_files"
 
@@ -46,9 +48,34 @@ def DTW(mfcc, sound):
         dist = eudis(v,sound)
         mat.append(dist)
     matrix = np.asmatrix(mat)
+    matrix[0,0] = 0
     return find_shortest_path(matrix)
 
-
+# def get_gold_anntotion(file):
+#     import speech_recognition as sr
+#     harvard = sr.AudioFile(file)
+#     r = sr.Recognizer()
+#     with harvard as source:
+#         audio = r.record(source)
+#     print(file)
+#     try:
+#         digit = r.recognize_google(audio)
+#     except:
+#         try:
+#             digit = r.recognize_ibm(audio)
+#         except:
+#             print("isnt known")
+#             digit = '0'
+#     print(digit)
+#     try:
+#         return transalte[digit]
+#     except:
+#         if digit in str(transalte.values()):
+#             return digit
+#         else:
+#             print("error detection file was thought to be ", digit)
+#             return "0"
+#             exit()
 
 def prepare_train_data(train_directory):
     train = {}
@@ -69,6 +96,7 @@ from collections import Counter
 euclid = Counter()
 dtw = Counter()
 text_to_file = []
+gold_text = []
 train_data = prepare_train_data(train_dir)
 for test_file in os.listdir(test_dir):
     euclid_scores = {}
@@ -92,11 +120,14 @@ for test_file in os.listdir(test_dir):
 
     sorted_euclid = sorted(euclid_scores.items(), key=lambda euclid_scores: euclid_scores[1])
     sorted_dtw = sorted(dtw_scores.items(), key=lambda dtw_scores: dtw_scores[1])
+    # gold_annotation = get_gold_anntotion(test_filename)
 
     euclid.update([transalte[sorted_euclid[0][0]]])
     dtw.update([transalte[sorted_dtw[0][0]]])
     text_to_file.append(row_text + ' - ' + str(transalte[sorted_euclid[0][0]])  + ' - ' + str(transalte[sorted_dtw[0][0]]) + "\n")
+    # gold_text.append(row_text + ' - ' + str(gold_annotation) + "\n")
 
 open("output.txt", 'w').writelines(text_to_file)
+# open("gold_output.txt", 'w').writelines(gold_text)
 # print(euclid)
 # print(dtw)
