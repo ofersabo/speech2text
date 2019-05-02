@@ -8,7 +8,7 @@ to_normelaize = True
 transalte = {'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5}
 axis_to_normelaize = 1
 
-two_axis_normaliztion = 0\
+two_axis_normaliztion = 0
 
 
 def normalize(v, by_axis = axis_to_normelaize):
