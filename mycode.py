@@ -9,16 +9,26 @@ transalte = {'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5}
 axis_to_normelaize = 1
 
 two_axis_normaliztion = 0
+standard_scaler = True
 
 
 def normalize(v, by_axis = axis_to_normelaize):
     global ll
-    sum_col = np.mean(v, axis=by_axis).reshape(v.shape[1 - by_axis], -1)
-    std_col = np.std(v, axis=by_axis).reshape(v.shape[1 - by_axis], -1)
-    if by_axis == 1:
-        res = (v - sum_col) / std_col
+    if standard_scaler:
+        sum_col = np.mean(v, axis=by_axis).reshape(v.shape[1 - by_axis], -1)
+        std_col = np.std(v, axis=by_axis).reshape(v.shape[1 - by_axis], -1)
+        if by_axis == 1:
+            res = (v - sum_col) / std_col
+        else:
+            res = (v - sum_col.T) / std_col.T
     else:
-        res = (v - sum_col.T) / std_col.T
+        my_max = np.max(v, axis=by_axis).reshape(v.shape[1 - by_axis], -1)
+        my_min = np.min(v, axis=by_axis).reshape(v.shape[1 - by_axis], -1)
+        if by_axis == 1:
+            res = (v - my_max) / (my_max - my_min)
+        else:
+            res = (v - my_max.T) / (my_max - my_min).T
+
 
     if two_axis_normaliztion == 1 and by_axis == 1:
         return normalize(res, 1 - by_axis)
@@ -117,5 +127,5 @@ for test_file in os.listdir(test_dir):
 
 open("output.txt", 'w').writelines(text_to_file)
 
-print(euclid)
-print(dtw)
+# print(euclid)
+# print(dtw)
